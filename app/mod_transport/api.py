@@ -3,7 +3,6 @@ from app import db
 from .transport_model import Transport
 from .transport_validator import validate_transport
 
-import json
 
 mod_transport = Blueprint("mod_transport", __name__, url_prefix="/transport")
 
@@ -76,8 +75,17 @@ def remove_transport(transport_id):
 
 @mod_transport.route("/", methods=["GET"])
 def read_transport():
-    test = Transport.query.filter(Transport.name.ilike("van%")).all()
+    transports = Transport.query.all()
 
-    lista_a_retornar = [ { "id": x.id, "name": x.name} for x in test ]
+    schema_transport = [{"id": x.id, "name": x.name} for x in transports]
 
-    return json.dumps(lista_a_retornar)
+    return jsonify(transports=schema_transport)
+
+
+@mod_transport.route("/<transport_id>", methods=["GET"])
+def read_transport_by_id(transport_id):
+    transport = Transport.query.get(transport_id)
+
+    data = {"id": transport.id, "name": transport.name}
+
+    return jsonify(data)

@@ -17,14 +17,19 @@ def create_app():
 
 
 def registry_blueprints(app):
-    from .mod_transport.api import mod_transport
 
     # REGISTERING BLUEPRINTS
+
+    from .mod_transport.api import mod_transport
     app.register_blueprint(mod_transport)
+
+    from .mod_transport_line.api import mod_transport_line
+    app.register_blueprint(mod_transport_line)
 
 
 def mapping_database():
     from .mod_transport.transport_model import Transport
+    from .mod_transport_line.transport_line_model import TransportLine
 
 
 
